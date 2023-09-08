@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\User;
+use Validator;
+use DB;
 
 class AdminUserController extends Controller
 {
@@ -26,5 +28,27 @@ class AdminUserController extends Controller
                 'message' => 'Permission denied. Only admin users can access this resource.',
             ], 403);
         }
+    }
+    // function to change the role of a user by admin
+    public function updateUserRole(Request $request, $id){
+        // Validate the user input (status)
+        $validator = Validator::make($request->all(), [
+            'userType' => 'required|in:admin,normal,guest',
+        ]);
+        // If validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+        // catch the input from admin user
+        $input = $request->all();
+        // update in db
+        DB::table('users')
+            ->where('id', $id)
+            ->update([
+                'userType' => $request->input('userType')
+        ]);
+        return response()->json([
+            'userType' => $request->input('userType')
+        ], 200);
     }
 }

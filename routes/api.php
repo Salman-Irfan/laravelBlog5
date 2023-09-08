@@ -28,6 +28,8 @@ Route::get('/blogs', [BlogController::class, 'getApprovedBlogs']);
 // route to add comment from guest
 Route::post('/blogs/{blog_id}/guest_comments', [CommentController::class, 'guestAddComment']);
 
+// route to read all comments 
+Route::get('/blogs/{blog_id}/comments', [CommentController::class, 'getAllComments']);
 
 
 // Protected routes (authentication required)
@@ -37,12 +39,25 @@ Route::post('/blogs/{blog_id}/guest_comments', [CommentController::class, 'guest
 
 // protected routes:
 Route::middleware('auth:sanctum')->group(function(){
-    // admin user routes -- route to get all user
+    // admin user routes -- route to get all users
     Route::get('/users',[AdminUserController::class, 'getAllUsers'])->middleware(['auth', 'App\Http\Middleware\UserType:admin']);
+    
     // route to create blogs -- normal user
     Route::post('/blogs',[BlogController::class, 'createBlog'])->middleware(['auth', 'App\Http\Middleware\UserType:normal']);
+
+    // get user profile
+    Route::get('/users/{user_id}',[UserController::class, 'getUserProfile'])->middleware(['auth', 'App\Http\Middleware\UserType:normal']);
+
+
+    // route to delete user
+    Route::delete('/users/{user_id}',[UserController::class, 'deleteAccount'])->middleware(['auth', 'App\Http\Middleware\UserType:normal']);
+
     // admin change the status of blog
     Route::put('/blogs/{id}',[BlogController::class, 'updateBlogStatus'])->middleware(['auth', 'App\Http\Middleware\UserType:admin']);
+
+    // admin change the role of user
+    Route::put('/users/{user_id}',[AdminUserController::class, 'updateUserRole'])->middleware(['auth', 'App\Http\Middleware\UserType:admin']);
+    
     // route to add comments from normal users
     Route::post('/blogs/{blog_id}/normal_comments',[CommentController::class, 'normalAddComment'])->middleware(['auth', 'App\Http\Middleware\UserType:normal']);
 });

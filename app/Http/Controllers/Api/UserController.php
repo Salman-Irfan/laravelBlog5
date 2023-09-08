@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
 use Auth;
+use DB;
 use App\Models\User;
 class UserController extends Controller
 {
@@ -63,4 +64,18 @@ class UserController extends Controller
         }
     }
     
+    // funtion to get user profile
+    public function getUserProfile(){
+        $user = Auth::user();
+        return response()->json($user);
+    }
+
+    // function to delete user profile
+    public function deleteAccount(){
+        $user = Auth::user();
+        $user->delete();
+        return response()->json([
+            'message' => 'user deleted successfully',
+            $user]);
+    }
 }

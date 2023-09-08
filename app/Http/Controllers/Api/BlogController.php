@@ -47,7 +47,9 @@ class BlogController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
+        // catch the input from admin user
         $input = $request->all();
+        // update in db
         DB::table('blogs')
             ->where('id', $id)
             ->update([

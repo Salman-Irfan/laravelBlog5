@@ -66,4 +66,10 @@ class CommentController extends Controller
             'userEmail'=>$userEmail
         ], 200);
     }
+
+    // function to get all comments
+    public function getAllComments(Request $request, $id){
+        $comments = DB::table('comments')->where('blogId', $id)->get();
+        return response()->json($comments, 200);
+    }
 }
