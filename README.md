@@ -7,10 +7,10 @@ database migration files were
 3. comments -> with foreign key of blogs
 
 Controllers were defined in /app/http/controllers/api/
-1/ UserController
-2/ AdminUserController
-3/ BlogController
-4/ CommentController
+1. UserController
+2. AdminUserController
+3. BlogController
+4. CommentController
 
 Routes are
 1. user can register / login / comment / delete its accoutn
